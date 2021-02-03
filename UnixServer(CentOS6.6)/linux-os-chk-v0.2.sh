@@ -1,6 +1,9 @@
 #!/bin/sh
 RESULT_FILE="result.txt"
-echo "Linux(CentOS 6.6) Vulnerability check start" > $RESULT_FILE 2>&1
+echo "Scan Vulnerability for UNIX Server" > $RESULT_FILE 2>&1
+echo "Target : Linux(CentOS 6.6) Server(EN Version)" >> $RESULT_FILE 
+echo "Created by : Jeong Wonjae, Kim Seungjun, Kim Seokju" >> $RESULT_FILE
+echo "Check Result Range : 양호/취약/인터뷰 필요" >> $RESULT_FILE
 splitLine="---------------------------------------"
 echo $splitLine >> $RESULT_FILE 2>&1
 
@@ -445,16 +448,19 @@ if [ -f "/etc/xinetd.conf" ]; then
 
 	permissionTotal=$permission_user$permission_group$permission_other
 	permission_owner=`ls -l /etc/xinetd.conf | awk '{ print $3 }'`
+
+	if [ $permissionTotal -eq 600 ] && [ "$permission_owner" == "root" ]; then
+		echo "[U-10] 양호" >> $RESULT_FILE
+	else
+		echo "[U-10] 취약" >> $RESULT_FILE
+	fi
 else
 	echo "Not exist /etc/xinetd.conf file" >> $RESULT_FILE
 	permissionTotal=000
+	echo "[U-10] 양호" >> $RESULT_FILE
 fi
 
-if [ $permissionTotal -eq 600 ] && [ "$permission_owner" == "root" ]; then
-	echo "[U-10] 양호" >> $RESULT_FILE
-else
-	echo "[U-10] 취약" >> $RESULT_FILE
-fi
+
 
 echo $splitLine >> $RESULT_FILE
 unset permission
@@ -511,32 +517,30 @@ if [ -f "/etc/syslog.conf" ]; then
 
 	permissionTotal=$permission_user$permission_group$permission_other
 	permission_owner=`ls -l /etc/syslog.conf | awk '{ print $3 }'`
+	
+	if [ $RESULT -eq 1 ]; then
+		if [ $permissionTotal -le 644 ]; then
+			if [ "$permission_owner" == "root" ] || [ "$permission_owner" == "bin" ] || [ "$permission_owner" == "sys" ]; then
+				RESULT=1
+				echo "[U-11] 양호" >> $RESULT_FILE
+			else
+				echo "Owner is not set 'root' or 'bin' or 'sys'" >> $RESULT_FILE
+				RESULT=0
+				echo "[U-11] 취약" >> $RESULT_FILE
+			fi
+		else
+			echo "Permission is not set below 644" >> $RESULT_FILE
+			RESULT=0
+			echo "[U-11] 취약" >> $RESULT_FILE
+		fi
+	fi
 else
 	echo "Not exist /etc/syslog.conf file" >> $RESULT_FILE
 	permissionTotal=000
-fi
-
-if [ $RESULT -eq 1 ]; then
-	if [ $permissionTotal -le 644 ]; then
-		RESULT=1
-	else
-		echo "Permission is not set below 644" >> $RESULT_FILE
-		RESULT=0
-	fi
-
-	if [ "$permission_owner" == "root" ] || [ "$permission_owner" == "bin" ] || [ "$permission_owner" == "sys" ]; then
-		RESULT=1
-	else
-		echo "Owner is not set 'root' or 'bin' or 'sys'" >> $RESULT_FILE
-		RESULT=0
-	fi
-fi
-
-if [ $RESULT -eq 1 ]; then
 	echo "[U-11] 양호" >> $RESULT_FILE
-else
-	echo "[U-11] 취약" >> $RESULT_FILE
 fi
+
+
 
 echo $splitLine >> $RESULT_FILE
 unset permission
@@ -689,7 +693,7 @@ echo "[U-17] \$HOME/.rhosts, hosts.equiv 사용 금지" >> $RESULT_FILE
 HOSTS=0
 RHOSTS=0
 
-echo "1. $HOME/.rhosts file" >> $RESULT_FILE
+echo "1. etc/hosts.equiv file" >> $RESULT_FILE
 if [ -f "/etc/hosts.equiv" ]; then
 	HOSTS=0
 	ls -l /etc/hosts.equiv >> $RESULT_FILE
@@ -744,7 +748,7 @@ fi
 
 
 echo "2. /$HOME/.rhosts file" >> $RESULT_FILE
-if [ -f "/$HOME/.rhosts" ]; then
+if [ -f "$HOME/.rhosts" ]; then
 
 	RHOSTS=0
 	ls -l /$HOME/.rhosts >> $RESULT_FILE
@@ -792,16 +796,19 @@ if [ -f "/$HOME/.rhosts" ]; then
 		echo "Set '+' options" >> $RESULT_FILE
 	fi
 
+	if [ $RHOSTS -eq 1 ] && [ $HOSTS -eq 1 ]; then
+		echo "[U-17] 양호" >> $RESULT_FILE
+	else
+		echo "[U-17] 취약" >> $RESULT_FILE
+	fi
+
 else
 	RHOSTS=0
-	echo "Not exist /$HOME/.rhosts file" >> $RESULT_FILE
+	echo "Not exist $HOME/.rhosts file" >> $RESULT_FILE
+	echo "[U-17] 양호" >> $RESULT_FILE
 fi
 
-if [ $RHOSTS -eq 1 ] && [ $HOSTS -eq 1 ]; then
-	echo "[U-17] 양호" >> $RESULT_FILE
-else
-	echo "[U-17] 취약" >> $RESULT_FILE
-fi
+
 
 echo $splitLine >> $RESULT_FILE
 unset permission
@@ -1782,9 +1789,9 @@ echo "[U-61] start"
 echo "[U-61] ssh 원격접속 허용"    >> $RESULT_FILE 2>&1
 ps -ef | grep sshd | grep -v grep > tmp.log
 if [ -s tmp.log ] ; then
-        echo "[U-61] 양호 ssh 서비스를 사용 중입니다."       >> $RESULT_FILE 2>&1
+        echo "[U-61] 취약 ssh 서비스를 사용 중입니다."       >> $RESULT_FILE 2>&1
 else 
-        echo "[U-61] 취약 ssh 서비스를 사용하고 있지 않습니다."       >> $RESULT_FILE 2>&1
+        echo "[U-61] 양호 ssh 서비스를 사용하고 있지 않습니다."       >> $RESULT_FILE 2>&1
 fi
 rm tmp.log
 echo "[U-61] end"

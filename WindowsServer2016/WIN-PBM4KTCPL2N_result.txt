@@ -1,0 +1,1056 @@
+                                 									
+[Scan Vulnerability for Windows Server]               				
+Target : Windows Server 2016(EN version)            				
+Created by : Jeong Wonjae, Kim Seokju				            	
+Check Result Range : 양호/취약/수동 점검 필요/인터뷰 필요						
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-01 : Administrator 계정 이름 바꾸기 									
+▲ 기준 : Administrator Default 계정 이름을 변경한 경우 양호					
+▲ 현황 																
+Alias name     administrators
+Comment        Administrators have complete and unrestricted access to the computer/domain
+
+Members
+
+-------------------------------------------------------------------------------
+Administrator
+WEB
+The command completed successfully.
+
+Account active               Yes
+▲ 결과 : 취약 									
+																	
+---------------------------------------- 							
+																	
+▲ W-02 : Guest 계정 상태 												
+▲ 기준 : Guest 계정이 비활성화 되어 있는 경우 양호 								
+▲ 현황 																
+User name                    Guest
+Full Name                    
+Comment                      Built-in account for guest access to the computer/domain
+User's comment               
+Country/region code          000 (System Default)
+Account active               No
+Account expires              Never
+
+Password last set            1/7/2021 1:12:23 PM
+Password expires             Never
+Password changeable          1/7/2021 1:12:23 PM
+Password required            No
+User may change password     No
+
+Workstations allowed         All
+Logon script                 
+User profile                 
+Home directory               
+Last logon                   Never
+
+Logon hours allowed          All
+
+Local Group Memberships      *Guests               
+Global Group memberships     *None                 
+The command completed successfully.
+
+Account active               No
+▲ 결과 : 양호 										
+																	
+---------------------------------------- 							
+																	
+▲ W-03 : 불필요한 계정 제거 												
+▲ 기준 : 불필요한 계정이 존재하지 않는 경우 양호 									
+▲ 현황 																
+
+User accounts for \\WIN-PBM4KTCPL2N
+
+-------------------------------------------------------------------------------
+Administrator            DefaultAccount           Guest                    
+WEB                      
+The command completed successfully.
+
+▲ 결과 : 인터뷰 필요							 							
+																	
+---------------------------------------- 							
+																	
+▲ W-04 : 계정 잠금 임계값 설정											
+▲ 기준 : 계정 잠금 임계값이 5 이하의 값으로 설정되어 있는 경우 양호 					
+▲ 현황 																
+Lockout threshold:                                    Never
+▲ 결과 : 취약   													
+																	
+---------------------------------------- 							
+																	
+▲ W-05 : 해독 가능한 암호화를 사용하여 암호 저장 해제 							
+▲ 기준 : "해독 가능한 암호화를 사용하여 암호 저장" 정책이 "사용 안 함"으로 되어 있는 경우 양호 	
+▲ 현황 																
+PasswordComplexity = 1
+▲ 결과 : 양호  										
+																	
+---------------------------------------- 							
+																	
+▲ W-06 : 관리자 그룹에 최소한의 사용자 포함 									
+▲ 기준 : Administrators 그룹의 구성원을 1명 이하로 유지하거나, 불필요한 관리자 계정이 존재하지 않는 경우 양호	  
+▲ 현황 																
+Alias name     administrators
+Comment        Administrators have complete and unrestricted access to the computer/domain
+
+Members
+
+-------------------------------------------------------------------------------
+Administrator
+WEB
+The command completed successfully.
+
+▲ 결과 : 인터뷰 필요  													
+																	
+---------------------------------------- 							
+																	
+▲ W-07 : 공유 권한 및 사용자 그룹 설정 										
+▲ 기준 : 일반 공유 디렉토리가 없거나 공유 디렉토리 접근 권한에 Everyone 권한이 없는 경우 "양호"	    
+▲ 현황 																
+C$           C:\                             Default share                     
+ADMIN$       C:\Windows                      Remote Admin                      
+ 																	
+C:\ NT AUTHORITY\SYSTEM:(OI)(CI)(F)
+    BUILTIN\Administrators:(OI)(CI)(F)
+    BUILTIN\Users:(OI)(CI)(RX)
+    BUILTIN\Users:(CI)(AD)
+    BUILTIN\Users:(CI)(IO)(WD)
+    CREATOR OWNER:(OI)(CI)(IO)(F)
+
+Successfully processed 1 files; Failed processing 0 files
+C:\Windows NT SERVICE\TrustedInstaller:(F)
+           NT SERVICE\TrustedInstaller:(CI)(IO)(F)
+           NT AUTHORITY\SYSTEM:(M)
+           NT AUTHORITY\SYSTEM:(OI)(CI)(IO)(F)
+           BUILTIN\Administrators:(M)
+           BUILTIN\Administrators:(OI)(CI)(IO)(F)
+           BUILTIN\Users:(RX)
+           BUILTIN\Users:(OI)(CI)(IO)(GR,GE)
+           CREATOR OWNER:(OI)(CI)(IO)(F)
+           APPLICATION PACKAGE AUTHORITY\ALL APPLICATION PACKAGES:(RX)
+           APPLICATION PACKAGE AUTHORITY\ALL APPLICATION PACKAGES:(OI)(CI)(IO)(GR,GE)
+           APPLICATION PACKAGE AUTHORITY\ALL RESTRICTED APPLICATION PACKAGES:(RX)
+           APPLICATION PACKAGE AUTHORITY\ALL RESTRICTED APPLICATION PACKAGES:(OI)(CI)(IO)(GR,GE)
+
+Successfully processed 1 files; Failed processing 0 files
+▲ 결과 : 양호 										
+																	
+---------------------------------------- 							
+																	
+▲ W-08 : 하드디스크 기본 공유 제거 											
+▲ 기준 : 레지스트리의 AutoShareServer(WinNT:AutoShareWks)가 0이며 기본 공유가 존재하지 않는 경우 "양호"	
+▲ 현황 																
+																	
+
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters
+    EnableAuthenticateUserSharing    REG_DWORD    0x0
+    ServiceDll    REG_EXPAND_SZ    %SystemRoot%\system32\srvsvc.dll
+    ServiceDllUnloadOnStop    REG_DWORD    0x1
+    NullSessionPipes    REG_MULTI_SZ    
+    autodisconnect    REG_DWORD    0xf
+    enableforcedlogoff    REG_DWORD    0x1
+    enablesecuritysignature    REG_DWORD    0x0
+    requiresecuritysignature    REG_DWORD    0x0
+    restrictnullsessaccess    REG_DWORD    0x1
+    AdjustedNullSessionPipes    REG_DWORD    0x3
+    Guid    REG_BINARY    8D111AEC3C992C45B670641995D8FB04
+
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters\FsctlAllowlist
+▲ 결과 : 양호											
+---------------------------------------- 							
+																	
+▲ W-09 : 불필요한 서비스 제거 											
+▲ 기준 : 일반적으로 불필요한 서비스가 중지되어 있는 경우 "양호"	    				
+▲ 현황 																
+																	
+▲ 결과 : 취약	 									
+---------------------------------------- 							
+																	
+▲ W-10 : IIS 서비스 구동 점검                							
+▲ 기준 : IIS 서비스가 필요하지 않아 이용하지 않는 경우 양호       					
+▲ 현황                   											
+    ProductString    REG_SZ    Microsoft Internet Information Services
+    SetupString    REG_SZ    IIS 10.0
+    VersionString    REG_SZ    Version 10.0
+▲ 결과 : 인터뷰 필요               										
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-11 : 디렉토리 리스팅 제거                								
+▲ 기준 : "디렉토리 검색" 체크하지 않은 경우 양호               					
+▲ 현황                   											
+\How to check\            											
+IIS Manager --/ Web Sites --/ Error pages --/ Edit feature Settgins --/ check "Custom error pages" 
+▲ 결과 : 수동 점검 필요               									
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-12 : IIS CGI 실행 제한                							
+▲ 기준 : 해당 디렉터리 Everyone에 모든 권한, 수정 권한, 쓰기 권한이 부여되지 않은 경우 양호 
+▲ 현황                   											
+Default IIS Directory        										
+    PathWWWRoot    REG_EXPAND_SZ    %SystemDrive%\inetpub\wwwroot
+Default CGI Directory : C:\inetpub\scripts 						
+\How to check\            											
+CGI Directory Properties --/ Security --/ Edit --/ Check "Everyone" Permssion set nothing 
+▲ 결과 : 수동 점검 필요               									
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-13 : IIS 상위 디렉토리 접근 금지                						
+▲ 기준 : 상위 패스 기능을 제거한 경우 양호 									
+▲ 현황                   											
+\How to check\            											
+IIS Manager --/ Web Sites(ALL) --/ ASP --/ Enable Parent Path --/ set "False" 
+▲ 결과 : 수동 점검 필요               									
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-14 : IIS 불필요한 파일 제거                							
+▲ 기준 : 해당 웹 사이트에 IISSamples, IISHelp 가상 디렉터리가 존재하지 않은 경우 양호 
+▲ 현황                   
+    MajorVersion    REG_DWORD    0xa
+IIS Version 10 not relevant W14. 								
+▲ 결과 : 양호               										
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-15 : 웹 프로세스 권한 제한                							
+▲ 기준 : 웹 프로세스가 웹 서비스 운영에 필요한 최소한 권한으로 설정되어 있는 경우 양호 		
+▲ 현황                   											
+Not set 'nobody' user or 'nobodys' group. 							
+▲ 결과 : 취약               											
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-16 : IIS 링크 사용금지                								
+▲ 기준 : 심볼링 링크, aliases, 바로가기 등의 사용을 허용하지 않는 경우 양호 			
+▲ 현황                   											
+    PathWWWRoot    REG_EXPAND_SZ    %SystemDrive%\inetpub\wwwroot
+ Volume in drive C has no label.
+ Volume Serial Number is B4F9-1100
+
+ Directory of C:\inetpub\wwwroot
+
+01/07/2021  01:01 PM    <DIR>          .
+01/07/2021  01:01 PM    <DIR>          ..
+01/07/2021  01:01 PM               703 iisstart.htm
+01/07/2021  01:01 PM            99,710 iisstart.png
+               2 File(s)        100,413 bytes
+               2 Dir(s)  52,001,349,632 bytes free
+Not exist link file in root folder. 								
+▲ 결과 : 양호               											
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-17 : IIS 파일 업로드 및 다운로드 제한                					
+▲ 기준 : 웹 프로세스의 서버 자원 관리를 위해 업로드 및 다운로드 용량을 제한하는 경우 양호 	
+▲ 현황                   											
+    PathWWWRoot    REG_EXPAND_SZ    %SystemDrive%\inetpub\wwwroot
+\Check C:\inetpub\wwwroot\web.config Configuration.\ 						
+Not set configuration or Not exist configuration file. 			
+▲ 결과 : 취약               											
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-18 : IIS DB 연결 취약점 점검                							
+▲ 기준 : .asa 매핑 시 특정 동작만 가능하도록 제한하여 설정한 경우 또는 매핑이 없을 경우 양호 
+▲ 현황                   											
+\Check handler mapping\ 											
+            <section name="modules" allowDefinition="MachineToApplication" overrideModeDefault="Deny" />
+          The <globalModules> section defines all native-code modules.
+          To enable a module, specify it in the <modules> section.
+            <add name="TRACEVerbHandler" path="*" verb="TRACE" modules="ProtocolSupportModule" requireAccess="None" />
+            <add name="OPTIONSVerbHandler" path="*" verb="OPTIONS" modules="ProtocolSupportModule" requireAccess="None" />
+            <add name="StaticFile" path="*" verb="*" modules="StaticFileModule,DefaultDocumentModule,DirectoryListingModule" resourceType="Either" requireAccess="Read" />
+        <modules>
+        </modules>
+ 
+\Check request filtering\ 											
+Not set configuration. 											
+▲ 결과 : 취약               											
+Need to checking for each website 'web.config' files. 				
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-19 : IIS 가상 디렉토리 삭제                							
+▲ 기준 : 해당 웹 사이트에 IIS Admin, IIS Adminpwd 가상 디렉터리가 존재하지 않는 경우 양호 
+▲ 현황                   											
+    MajorVersion    REG_DWORD    0xa
+IIS Version 10 not relevant W19. 								
+▲ 결과 : 양호               										
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-20 : IIS 데이터 파일 ACL 적용               							
+▲ 기준 : 홈 디렉토리 내에 있는 하위 파일들에 대해 Everyone 권한이 존재하지 않는 경우 양호  
+▲ 현황                   											
+\How to check\            											
+IIS Manager --/ Web Sites --/ Basic Settings --/ check "Physical Path"         
+Enter 'Web Site Root Folder' --/ check 'Everyone permission on Subfiles(.asp, CGI)' 
+\Web Site Root Folder\            									
+    PathWWWRoot    REG_EXPAND_SZ    %SystemDrive%\inetpub\wwwroot
+\Sub file(CGI, Script) List \ 										
+▲ 결과 : 수동 점검 필요               									
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-21 : IIS 미사용 스크립트 매핑 제거               						
+▲ 기준 : 취약한 매핑(.htr .idc .stm .shtm .shtml .printer .htw .ida. idq)이 존재하지 않는 경우 양호 
+▲ 현황                   											
+\How to check\            											
+IIS Manager --/ Web Sites --/ Handler Mapping --/ check extension         
+▲ 결과 : 양호               											
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-22 : IIS Exec 명령어 쉘 호출 진단               						
+▲ 기준 : IIS 5.0 버전에서 해당 레지스트리 값이 0이거나, IIS 6.0 버전 이상인 경우 		
+▲ 현황                   											
+\How to check\            											
+Regedit --\ HKLM\SYSTEM\CurrentControlSet\Services\W3SVC\Parameters --\ check 'SSIEnableCmdDirective=0'         
+    MajorVersion    REG_DWORD    0xa
+IIS Version 10 not relevant W22. 								
+▲ 결과 : 양호               										
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-23 : IIS WebDav 비활성화               							
+▲ 기준 : WebDav가 비활성화 되어 있는 경우 경우 								
+▲ 현황                   											
+\How to check\            											
+IIS Manager --/ Web Sites --/ ISAPI and CGI Restriction --/ check WebDav Restriction='not allowed'         
+\Current Configuration\            								
+WebDav was not allowed or not existed.         					
+▲ 결과 : 양호         												
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-24 : NetBIOS 바인딩 서비스 구동 점검                					
+▲ 기준 : TCP/IP와 NetBIOS 간의 바인딩이 제거 되어 있는 경우 양호      			
+▲ 현황																
+
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NetBT\Parameters\Interfaces\Tcpip_{09e0c0d4-9b62-4b86-b5b4-5cc3826e25f4}
+    NameServerList    REG_MULTI_SZ    
+    NetbiosOptions    REG_DWORD    0x0
+
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NetBT\Parameters\Interfaces\Tcpip_{d0abfb3b-9e7f-47ea-becb-b878b6f441a2}
+    NameServerList    REG_MULTI_SZ    
+    NetbiosOptions    REG_DWORD    0x0
+
+▲ 결과 : 양호 										
+                                          							
+----------------------------------------             				
+                                          							
+▲ W-25 : FTP 서비스 구동 점검                							
+▲ 기준 : FTP 서비스를 사용하지 않거나 secure FTP 서비스를 사용시 양호      		
+▲ 현황																
+▲ 결과 : 수동 점검 필요 												
+                                          							
+----------------------------------------             				
+                                          							
+▲ W-26 : FTP 디렉토리 접근권한 설정                						
+▲ 기준 : FTP 홈 디렉토리에 Everyone 권한이 없는 경우      					
+▲ 현황																
+▲ 결과 : 수동 점검 필요 												
+                                          							
+----------------------------------------             				
+                                          							
+▲ W-27 : Anonymous FTP 금지                							
+▲ 기준 : FTP 서비스를 사용하지 않거나, "익명 연결 허용"이 체크되지 않은 경우 양호    
+▲ 현황																
+▲ 결과 : 수동 점검 필요 												
+                                          							
+----------------------------------------             				
+                                          							
+▲ W-28 : FTP 접근 제어 설정                							
+▲ 기준 : 특정 IP 주소에서만 FTP 서버에 접속하도록 접근제어 설정을 적용한 경우 양호   	
+▲ 현황																
+▲ 결과 : 수동 점검 필요 												
+                                         					 		
+----------------------------------------             				
+                                          							
+▲ W-29 : DNS Zone Transfer 설정                						
+▲ 기준 : DNS 서비스 사용하지 않고 영역 전송 허용을 사용하지 않으며 특정 서버로만 설정이 되는 경우 양호  
+▲ 현황																
+Not found DNS Service 											
+▲ 결과 : 양호 														
+                                          							
+----------------------------------------             				
+                                          							
+[+]W29 end															
+▲ W-30 : RDS(Remote Data Services)제거              				
+▲ 기준      														
+  1.IIS를 사용하지 않은 경우               								
+  2. Windows 2000 서비스팩 4, Windows 2003 서비스팩 2 이상 설치되어 있는 경우 
+  3. 디폴트 웹 사이트에 MSADC 가상 디렉토리가 존재하지 않은 경우               	
+  4. 해당 레지스트리 값이 존재하지 않는 경우               					
+▲ 현황																
+    Description    REG_SZ    Registry Server
+▲ 결과 : 수동 점검 필요													
+                                          							
+----------------------------------------             				
+                                          							
+▲ W-31 : 최신 서비스팩 적용               								
+▲ 기준 : 최신 서비스팩이 설치되어 있으며 적용 적차 및 방법이 수립된 경우 양호     	
+▲ 현황																
+담당자 인터뷰(winver 명령어 통해 확인가능)  								
+▲ 결과 : 인터뷰 필요 													
+                                          							
+----------------------------------------             				
+                                          							
+▲ W-32 : 최신 HOT FIX 적용               								
+▲ 기준 : 최신 HotFix가 있는지 주기적으로 모니터링하고 반영하거나, PMS Agent가 설치되어 자동패치 배포가 적용된 경우 양호 
+▲ 현황																
+▲ 결과 : 인터뷰 필요													
+                                          							
+----------------------------------------             				
+                                          							
+▲ W-33 : 백신 프로그램 업데이트               							
+▲ 기준 : 바이러스 백신 프로그램의 최신 엔진 업데이트가 설치되어 있거나, 망 격리환경의 경우 백신 업데이트를 위한 절차 및 적용 방법이 수립된 경우 양호 
+▲ 현황																
+▲ 결과 : 인터뷰 필요													
+                                          							
+----------------------------------------             				
+                                          							
+[+]W33 end															
+▲ W-34 : 로그의 정기적 검토 및 보고               						
+▲ 기준 : 접속기록 등의 보안 로그, 응용 프로그램 및 시스템 로그 기록에 대해 정기적으로 검토, 분석, 리포트 작성 및 보고 등의 조치가 이루어지는 경우 양호     
+▲ 현황																
+"AuditLogonEvents" = 3 설정											
+"AuditObjectAccess" = 3 설정										
+"AuditPrivilegeUse" = 3 설정										
+"AuditAccountManage" = 3 설정										
+"AuditAccountLogon" = 3 설정										
+[Event Audit]
+AuditSystemEvents = 0
+AuditLogonEvents = 0
+AuditObjectAccess = 0
+AuditPrivilegeUse = 0
+AuditPolicyChange = 0
+AuditAccountManage = 0
+AuditProcessTracking = 0
+AuditDSAccess = 0
+AuditAccountLogon = 0
+MACHINE\System\CurrentControlSet\Control\Lsa\AuditBaseObjects=4,0
+MACHINE\System\CurrentControlSet\Control\Lsa\CrashOnAuditFail=4,0
+MACHINE\System\CurrentControlSet\Control\Lsa\FullPrivilegeAuditing=3,0
+SeAuditPrivilege = *S-1-5-19,*S-1-5-20
+▲ 결과 : 인터뷰 필요                     									
+                                          							
+----------------------------------------             				
+                                          							
+▲ W-35 : 원격으로 액세스 할 수 있는 레지스트리 경로	 						
+▲ 기준 : Remote Registry 서비스가 실행되지 않으면 양호						
+▲ 현황 																
+
+SERVICE_NAME: RemoteRegistry 
+        TYPE               : 20  WIN32_SHARE_PROCESS  
+        STATE              : 1  STOPPED 
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+▲ 결과 : 양호  										
+																	
+---------------------------------------- 							
+																	
+▲ W-36 : 백신 프로그램 설치	 											
+▲ 기준 : 백신 프로그램이 설치되어 있는 경우 양호								
+▲ 현황 																
+▲ 결과 : 수동 점검 필요				  									
+																	
+---------------------------------------- 							
+																	
+▲ W-37 : SAM 파일 접근 통제 설정	 											
+▲ 기준 : SAM 파일 접근권한에 Administrator, System 그룹만 설정되어 있으면 양호			
+▲ 현황 																		
+C:\Windows\system32\config\SAM NT AUTHORITY\SYSTEM:(F)
+                               BUILTIN\Administrators:(F)
+
+Successfully processed 1 files; Failed processing 0 files
+▲ 결과 : 취약					  										
+																	
+---------------------------------------- 							
+																	
+▲ W-38 : 화면 보호기 설정	 											
+▲ 기준 : 화면보호기 사용 및 다시 시작할 때 로그온 화면 표시 체크					
+▲ 현황 																
+    ScreenSaveActive    REG_SZ    1
+Not set ScreenSaverIsSecure									
+▲ 결과 : 취약					  										
+																	
+---------------------------------------- 							
+																	
+▲ W-39 : 로그온 하지 않고 시스템 종료 허용 해제	 							
+▲ 기준 : 로그온 하지 않고 시스템 종료 허용이 '사용안함'인 경우 양호 				
+▲ 현황 																
+    shutdownwithoutlogon    REG_DWORD    0x0
+▲ 결과 : 취약					  										
+																	
+---------------------------------------- 							
+																	
+▲ W-40 : 원격 시스템에서 강제로 시스템 종료	 								
+▲ 기준 : "원격 시스템에서 강제로 시스템 종료" 정책에 'Administrators'만 존재하는 경우 양호				
+▲ 현황 																
+SeRemoteShutdownPrivilege = *S-1-5-32-544
+▲ 결과 : 양호				  											
+																	
+---------------------------------------- 							
+																	
+▲ W-41 : 보안 감사를 로그할 수 없는 경우 즉시 시스템 종료 	 					
+▲ 기준 : 해당 정책이 비활성화 되어 있는 경우 양호								
+▲ 현황 																
+    crashonauditfail    REG_DWORD    0x0
+▲ 결과 : 양호				  											
+																	
+---------------------------------------- 							
+																	
+▲ W-42 : SAM 계정과 공유의 익명 열거 허용 안함	 											
+▲ 기준 : "SAM 계정과 공유의 익명 열거 허용 안함" 정책이 설정되어 있는 경우 양호 		
+▲ 현황 																
+\How to check\            											
+SECPOL.MSC --/ Local Policies --/ Security Options	--/   			    
+'Network access:Do not allow anonymous enumeration of SAM accounts and shares' Set 'Disabled'  
+▲ 결과 : 수동 점검 필요				  									
+																	
+---------------------------------------- 							
+																	
+▲ W-43 : Autologin 기능 제어	 											
+▲ 기준 : AutoAdminLogon 값이 없거나 0으로 설정되어 있는 경우 양호 					
+▲ 현황 																
+    AutoAdminLogon    REG_SZ    0
+▲ 결과 : 양호				  											
+																	
+---------------------------------------- 							
+																	
+▲ W-44 : 이동식 미디어 포맷 및 꺼내기 허용	 											
+▲ 기준 : "이동식 미디어 포맷 및 꺼내기 허용" 정책이 "Administrator"로 되어 있는 경우 양호					
+▲ 현황 																
+\How to check\            											
+SECPOL.MSC --/ Local Policies --/ Security Options	--/   			    
+'Devices: Allowed to format and eject removable media' Set 'Administrator'  
+▲ 결과 : 수동 점검 필요				  									
+																	
+---------------------------------------- 							
+																	
+▲ W-45 : 디스크볼륨 암호화 설정	 											
+▲ 기준 : "데이터 보호를 위해 내용을 암호화" 정책이 선택된 경우 양호 					
+▲ 현황 																
+\How to check\            											
+Select Folder --/ Folder Properties --/ General --/   			    
+Advanced --/ Compress or Encrypt attributes --/	  			    
+Check 'Encrypt contents to secure data'			  			    
+▲ 결과 : 수동 점검 필요				  									
+																	
+---------------------------------------- 							
+																	
+▲ W-46 : Everyone 사용 권한을 익명 사용자에게 적용 해제 						
+▲ 기준 : "Everyone 사용 권한을 익명 사용자에게 적용" 정책이 "사용 안 함" 으로 되어 있는 경우 양호			
+▲ 현황 																
+▲ 결과 : 취약  										
+																	
+---------------------------------------- 							
+																	
+▲ W-47 : 계정 잠금 기간 설정 											
+▲ 기준 : "계정 잠금 기간" 및 "계정 잠금 기간 원래대로 설정 기간"이 설정되어 있는 경우 양호(60분 이상의 값으로 설정하기를 권고함)		
+▲ 현황 																
+Lockout duration (minutes):                           30
+Lockout observation window (minutes):                 30
+▲ 결과 : 양호  														
+																	
+---------------------------------------- 							
+																	
+▲ W-48 : 패스워드 복잡성 설정 											
+▲ 기준 : "암호는 복잡성을 만족해야 함" 정책이 "사용"으로 되어 있는 경우 양호				
+▲ 현황 																
+PasswordComplexity = 1
+▲ 결과 : 양호  									
+																	
+---------------------------------------- 							
+																	
+▲ W-49 : 패스워드 최소 암호 길이 											
+▲ 기준 : 최소 암호 길이가 8문자 이상으로 설정되어 있는 경우 양호						
+▲ 현황 																
+MinimumPasswordLength = 0
+																	
+▲ 결과 : 취약 							
+																	
+---------------------------------------- 							
+																	
+▲ W-50 : 패스워드 최대 사용 기간 											
+▲ 기준 : 최대 암호 사용 기간이 90일 이하로 설정되어 있는 경우 "양호"					
+▲ 현황 																
+MaximumPasswordAge = -1
+ 																	
+▲ 결과 : 양호								
+																	
+---------------------------------------- 							
+																	
+▲ W-51 : 패스워드 최소 사용 기간											
+▲ 기준 : 최소 암호 사용 기간이 0보다 큰 값으로 설정되어 있는경우 "양호" 				
+▲ 현황 																
+MinimumPasswordAge = 0
+ 																	
+▲ 결과 : 취약							
+																	
+---------------------------------------- 							
+																	
+▲ W-52 : 마지막 사용자 이름 표시 안함										
+▲ 기준 : 마지막 사용자 이름 표시 안함이 사용으로 설정되어 있는 경우 "양호"				
+▲ 현황								 								
+																	
+    dontdisplaylastusername    REG_DWORD    0x0
+▲ 결과 : 양호											
+																	
+---------------------------------------- 							
+																	
+▲ W-53 : 로컬 로그온 허용               									
+▲ 기준 : 로컬 로그온 허용 정책에 Administrators, IUSR_만 존재하는 경우 양호 		
+▲ 현황                   											
+*** Allow local logon accounts List *** 							
+*S-1-5-32-544 
+*S-1-5-32-545 
+*S-1-5-32-551 
+▲ 결과 : 취약               											
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-54 : 익명 SID/이름 변환 허용 해제              						
+▲ 기준 : "익명 SID/이름 변환 허용" 정책이 "사용 안 함"으로 되어 있는 경우 			
+▲ 현황                  												
+LSAAnonymousNameLookup = 0
+▲ 결과 : 양호               											
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-55 : 최근 암호 기억 정책 설정 여부 점검               					
+▲ 기준 : 최근 암호 기억이 4개 이상으로 설정되어 있는 경우 양호 						
+▲ 현황                   											
+Length of password history maintained:                None
+▲ 결과 : 취약               											
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-56 : 콘솔 로그온 시 로컬 계정에서 빈 암호 사용 제한               			
+▲ 기준 : "콘솔 로그온 시 로컬 계정에서 빈 암호 사용 제한" 정책이 "사용"인 경우 양호 		
+▲ 현황                   											
+
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa
+    LimitBlankPasswordUse    REG_DWORD    0x1
+
+▲ 결과 : 양호               											
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-57 : 원격터미널 접속 가능한 사용자 그룹 제한               					
+▲ 기준 : (관리자 계정을 제외) 원격 접속이 가능한 계정을 생성하여 타 사용자의 원격 접속을 제한하고, 원격접속 사용자 그룹에 불필요한 계정이 등록되어 있지 않은 경우 양호               
+▲ 현황                   											
+*Remote connection using network autentication level*   			
+
+HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Control\Terminal Server\WinStations\RDP-Tcp
+    UserAuthentication    REG_DWORD    0x1
+
+*Administrators Group*   											
+Administrator            												
+WEB            												
+                   												
+\How to check\            											
+Control Panel --\ All Control Panel Items --\ System --\ Remote Settings --\ Select Users --\ Delete unnecessary user 
+                   												
+▲ 결과 : 인터뷰 필요               										
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-58 : IIS 터미널 서비스 암호화 수준 설정                					
+▲ 기준 : 터미널 서비스를 사용하지 않거나 사용 시 암호화 수준을 "클라이언트와 호환 가능(중간)" 이상으로 설정한 경우 양호                
+▲ 현황                   											
+
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server
+    fDenyTSConnections    REG_DWORD    0x1
+
+Not used Terminal Service. 										
+▲ 결과 : 양호               											
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-59 : IIS 웹서비스 정보 숨김                							
+▲ 기준 : 웹 서비스 에러 페이지가 별도로 지정되어 있는 경우 양호         			  	
+▲ 현황                   											
+\How to check\            											
+IIS Manager --/ Web Sites --/ Directory Browsing --/ check "Disable" 
+▲ 결과 : 인터뷰 필요               										
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-60 : SNMP 서비스 구동점검                      						
+▲ 기준 : SNMP 서비스를 사용하지 않는 경우 양호            						
+▲ 현황                               								
+[SC] EnumQueryServicesStatus:OpenService FAILED 1060:
+
+The specified service does not exist as an installed service.
+
+▲ 결과 : 양호 										
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-61 : SNMP 서비스 커뮤니티스트링의 복잡성 설정    							
+▲ 기준 : SNMP 서비스를 사용하지 않거나 Community String이 public, private이 아닌 경우 양호   
+▲ 현황                              									
+Not found SNMP Service 											
+▲ 결과 : 양호 														
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-62 : SNMP Access contorol            							
+▲ 기준 : 특정 호스트로부터 SNMP 패킷 받아들이기로 설정되어 있는 경우 양호   			
+▲ 현황                               								
+Not found SNMP Service 											
+▲ 결과 : 양호 														
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-63 : DNS 서비스 구동 점검                     						
+▲ 기준 : DNS 서비스를 사용하지 않거나 동적 업데이트 "없음(아니오)"으로 설정되어 있는 경우 양호    
+▲ 현황                               								
+Not found DNS Service 											
+▲ 결과 : 양호 														
+                                									
+----------------------------------------    						
+                                 									
+▲ W-64 : HTTP/FTP/SNMP 배너 차단                 						
+▲ 기준 : HTTP, FTP, SMTP 접속 시 배너 정보가 보이지 않는 경우 양호    			
+▲ 현황                                        						
+\Server Presence or absence\               						
+IIS Server not exist.          					
+FTP Server not exist.          					
+SMTP Server not exist.       						
+\How to check\                          							
+1. HTTP                                  							
+1-1. IIS Manager --\ Web site --\ ISAPI Filter --\ Check "added urlscan.dll"   
+1-2. C:\Windows\System32\inetserv\urlscan\urlscan.ini    		  	
+--\ RemoteserverHeader=1 and AllowDotInPath=1   					
+2. FTP                                  							
+IIS Manager --\ FTP Messages --\ Check Banner     					
+3. SMTP                              								
+IIS 6.0 Manager --\ Check Not Allow 'Metabase Settings'            
+▲ 결과 : 수동 점검 필요                        							
+                                             						
+----------------------------------------       					
+                                             						
+▲ W-65 : Telnet 보안 설정                								
+▲ 기준 : Telnet 서비스가 구동 되어 있지 않거나 인증 방법이 NTLM인 경우 양호          	
+▲ 현황                               								
+OS Name:                   Microsoft Windows Server 2016 Essentials
+Windows Server 2016 is not suport Telnet Server 					
+▲ 결과 : N/A 														
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-66 : 불필요한 ODBC/OLE-DB 데이터 소스와 드라이브 제거   					
+▲ 기준 : 시스템 DSN 부분의 Data Source를 현재 사용하고 있는 경우 양호             	
+▲ 현황                               								
+\How to check\            											
+Administrative Tools --\ Related ODBC --\ System DSN --\ Delete Data source if not use.       
+▲ 결과 : 수동 점검 필요                     								
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-67 : 원격터미널 접속 타임아웃 설정                      					
+▲ 기준 : 원격제어 시 Timeout 제어 설정을 적용한 경우 양호      					
+▲ 현황                               								
+Not configured Timeout 											
+▲ 결과 : 취약                     									
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-68 : 예약된 작업에 의심스러운 명령이 등록되어 있는지 점검                      	
+▲ 기준 : 불필요한 명령어나 파일 등 주기적인 예약 작업의 존재 여부를 주기적으로 점검하고 제거한 경우 양호 
+▲ 현황                               								
+User_Feed_Synchronization-{EB3C97C3-A729 1/7/2021 7:02:48 PM    Ready          
+AD RMS Rights Policy Template Management N/A                    Ready          
+EDP Policy Manager                       N/A                    Ready          
+SmartScreenSpecific                      N/A                    Ready          
+Microsoft Compatibility Appraiser        1/8/2021 4:18:24 AM    Ready          
+ProgramDataUpdater                       N/A                    Ready          
+StartupAppTask                           N/A                    Ready          
+appuriverifierdaily                      1/8/2021 3:00:00 AM    Ready          
+appuriverifierinstall                    1/9/2021 3:00:00 AM    Ready          
+CleanupTemporaryState                    N/A                    Ready          
+DsSvcCleanup                             N/A                    Ready          
+Pre-staged app cleanup                   N/A                    Ready          
+Proxy                                    N/A                    Ready          
+UninstallDeviceTask                      N/A                    Ready          
+AikCertEnrollTask                        N/A                    Ready          
+CryptoPolicyTask                         N/A                    Ready          
+KeyPreGenTask                            N/A                    Ready          
+SystemTask                               N/A                    Ready          
+UserTask                                 N/A                    Ready          
+UserTask-Roam                            N/A                    Ready          
+ProactiveScan                            N/A                    Ready          
+CreateObjectTask                         N/A                    Ready          
+Consolidator                             1/7/2021 6:00:00 PM    Ready          
+KernelCeipTask                           N/A                    Ready          
+UsbCeip                                  N/A                    Ready          
+Data Integrity Scan                      1/23/2021 7:36:12 AM   Ready          
+Data Integrity Scan for Crash Recovery   N/A                    Ready          
+ScheduledDefrag                          N/A                    Ready          
+Device                                   1/8/2021 4:06:55 AM    Ready          
+Metadata Refresh                         N/A                    Ready          
+Scheduled                                N/A                    Ready          
+SilentCleanup                            N/A                    Ready          
+Microsoft-Windows-DiskDiagnosticDataColl N/A                    Ready          
+Diagnostics                              N/A                    Ready          
+StorageSense                             N/A                    Ready          
+EDP App Launch Task                      N/A                    Ready          
+EDP Auth Task                            N/A                    Ready          
+EnableErrorDetailsUpdate                 N/A                    Ready          
+Installation                             N/A                    Ready          
+Uninstallation                           N/A                    Ready          
+TempSignedLicenseExchange                N/A                    Ready          
+Notifications                            N/A                    Ready          
+WindowsActionDialog                      N/A                    Ready          
+WinSAT                                   N/A                    Ready          
+MapsToastTask                            N/A                    Ready          
+MNO Metadata Parser                      N/A                    Ready          
+LPRemove                                 N/A                    Ready          
+GatherNetworkInfo                        N/A                    Ready          
+Secure-Boot-Update                       N/A                    Ready          
+Sqm-Tasks                                N/A                    Ready          
+Device Install Group Policy              N/A                    Ready          
+Device Install Reboot Required           N/A                    Ready          
+Plug and Play Cleanup                    N/A                    Ready          
+Sysprep Generalize Drivers               N/A                    Ready          
+AnalyzeSystem                            N/A                    Ready          
+MobilityManager                          N/A                    Ready          
+VerifyWinRE                              N/A                    Ready          
+RegIdleBackup                            N/A                    Ready          
+CleanupOldPerfLogs                       N/A                    Ready          
+ServerManager                            N/A                    Ready          
+StartComponentCleanup                    N/A                    Ready          
+BackgroundUploadTask                     N/A                    Ready          
+BackupTask                               N/A                    Ready          
+NetworkStateChangeTask                   N/A                    Ready          
+SetupCleanupTask                         1/12/2021 6:00:00 AM   Ready          
+CreateObjectTask                         N/A                    Ready          
+IndexerAutomaticMaintenance              N/A                    Ready          
+Configuration                            N/A                    Ready          
+SvcRestartTask                           1/8/2021 1:05:14 PM    Ready          
+SvcRestartTaskLogon                      N/A                    Ready          
+SvcRestartTaskNetwork                    N/A                    Ready          
+SpaceAgentTask                           N/A                    Ready          
+SpaceManagerTask                         N/A                    Ready          
+SpeechModelDownloadTask                  1/8/2021 12:00:00 AM   Ready          
+Storage Tiers Management Initialization  N/A                    Ready          
+Interactive                              N/A                    Ready          
+ForceSynchronizeTime                     N/A                    Ready          
+SynchronizeTimeZone                      N/A                    Ready          
+Tpm-HASCertRetr                          N/A                    Ready          
+Tpm-Maintenance                          N/A                    Ready          
+Reboot                                   N/A                    Ready          
+Refresh Settings                         1/8/2021 3:44:23 AM    Ready          
+Schedule Scan                            1/8/2021 11:58:54 AM   Ready          
+USO_UxBroker_Display                     N/A                    Ready          
+USO_UxBroker_ReadyToReboot               N/A                    Ready          
+UPnPHostConfig                           N/A                    Ready          
+ResolutionHost                           N/A                    Ready          
+Windows Defender Cache Maintenance       N/A                    Ready          
+Windows Defender Cleanup                 N/A                    Ready          
+Windows Defender Scheduled Scan          N/A                    Ready          
+Windows Defender Verification            N/A                    Ready          
+QueueReporting                           1/7/2021 6:14:56 PM    Ready          
+BfeOnServiceStartTypeChange              N/A                    Ready          
+Scheduled Start                          N/A                    Ready          
+sih                                      1/7/2021 8:50:18 PM    Ready          
+sihboot                                  N/A                    Ready          
+XblGameSaveTask                          N/A                    Ready          
+XblGameSaveTaskLogon                     N/A                    Ready          
+▲ 결과 : 인터뷰 필요                    									
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-69 : 정책에 따른 시스템 로깅 설정                     					
+▲ 기준 : 감사 정책 권고 기준에 따라 감사 설정이 되어 있는 경우 양호                   	
+▲ 현황                               								
+[Event Audit]
+AuditSystemEvents = 0
+AuditLogonEvents = 0
+AuditObjectAccess = 0
+AuditPrivilegeUse = 0
+AuditPolicyChange = 0
+AuditAccountManage = 0
+AuditProcessTracking = 0
+AuditDSAccess = 0
+AuditAccountLogon = 0
+MACHINE\System\CurrentControlSet\Control\Lsa\AuditBaseObjects=4,0
+MACHINE\System\CurrentControlSet\Control\Lsa\CrashOnAuditFail=4,0
+MACHINE\System\CurrentControlSet\Control\Lsa\FullPrivilegeAuditing=3,0
+SeAuditPrivilege = *S-1-5-19,*S-1-5-20
+▲ 결과 : 취약                     									
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-70 : 이벤트 로그 관리 설정                      						
+▲ 기준 : 최대 로그 크기 "10,240KB 이상"으로 설정, "90일 이후 이벤트 덮어씀"을 설정한 경우 양호                   
+▲ 현황                               								
+    MaxSize    REG_DWORD    0x1400000
+▲ 결과 : 취약                     									
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-71 : 원격에서 이벤트 로그 파일 접근 차단                  					
+▲ 기준 : 로그 디렉터리의 접근권한에 Everyone 권한이 없는 경우 양호       			
+▲ 현황                                           					
+C:\Windows\system32\config NT SERVICE\TrustedInstaller:(CI)(F)
+                           NT AUTHORITY\SYSTEM:(OI)(CI)(F)
+                           BUILTIN\Administrators:(OI)(CI)(F)
+                           CREATOR OWNER:(OI)(CI)(IO)(F)
+
+Successfully processed 1 files; Failed processing 0 files
+▲ 결과 : 양호                         				
+                                             						
+----------------------------------------                			
+                                            						
+▲ W-72 : DoS 공격 방어 레지스트리 설정                      				
+▲ 기준 : Dos 방어 레지스트리 값이 아래와 같이 설정되어 있는 경우                  	
+SynAttackProtect = REG_DWORD 0(False)가 1 이상                  		
+EnableDeadGWDetect = REG_DWORD 1(True)가 0                  		
+KeepAliveTime = REG_DWORD 7,200,000(2시간)가 300,000(5분)             
+NoNameReleaseOnDemand = REG_DWORD 0(False)가 1                  	
+▲ 현황                               								
+
+HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Tcpip\Parameters
+    DataBasePath    REG_EXPAND_SZ    %SystemRoot%\System32\drivers\etc
+    Domain    REG_SZ    
+    ForwardBroadcasts    REG_DWORD    0x0
+    ICSDomain    REG_SZ    mshome.net
+    IPEnableRouter    REG_DWORD    0x0
+    NameServer    REG_SZ    
+    SyncDomainWithMembership    REG_DWORD    0x1
+    NV Hostname    REG_SZ    WIN-PBM4KTCPL2N
+    Hostname    REG_SZ    WIN-PBM4KTCPL2N
+    SearchList    REG_SZ    
+    UseDomainNameDevolution    REG_DWORD    0x1
+    EnableICMPRedirect    REG_DWORD    0x1
+    DeadGWDetectDefault    REG_DWORD    0x1
+    DontAddDefaultGatewayDefault    REG_DWORD    0x0
+
+HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Tcpip\Parameters\Adapters
+HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Tcpip\Parameters\DNSRegisteredAdapters
+HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Tcpip\Parameters\Interfaces
+HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Tcpip\Parameters\NsiObjectSecurity
+HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Tcpip\Parameters\PersistentRoutes
+HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Tcpip\Parameters\Winsock
+▲ 결과 : 취약                     									
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-73 : 사용자가 프린터 드라이버를 설치 할 수 없게 함                      		
+▲ 기준 : "사용자가 프린터 드라이버를 설치할 수 없게 함 " 정책이 설정된 경우 양호          	
+▲ 현황                               								
+
+HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Control\Print\Providers\LanMan Print Services\Servers
+    AddPrinterDrivers    REG_DWORD    0x1
+
+▲ 결과 : 양호                     									
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-74 : 세션 연결을 중단하기 전에 필요한 유휴 시간                      		
+▲ 기준 : "로그온 시간이 만료되면 클라이언트 연결 끊기" 정책을 "사용"으로, "세션 연결을 중단하기 전에 필요한 유휴 시간" 정책을 "15분"으로 설정한 경우 양호                  
+▲ 현황                               								
+    enableforcedlogoff    REG_DWORD    0x1
+    autodisconnect    REG_DWORD    0xf
+▲ 결과 : 양호                     									
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-75 : 경고 메시지 설정                      							
+▲ 기준 : 로그온 경고 메시지 제목 및 내용이 설정되어 있는 경우 양호                   	
+▲ 현황                               								
+    legalnoticecaption    REG_SZ    
+    legalnoticetext    REG_SZ    
+▲ 결과 : 취약                     									
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-76 : 사용자별 홈 디렉토리 권한 설정                      				
+▲ 기준 : 홈 디렉터리에 Everyone 권한이 없는 경우 (All Users, Default User 디렉터리 제외) 양호                  
+▲ 현황                               								
+C:\Users\WEB NT AUTHORITY\SYSTEM:(OI)(CI)(F)
+             BUILTIN\Administrators:(OI)(CI)(F)
+             WIN-PBM4KTCPL2N\WEB:(OI)(CI)(F)
+
+Successfully processed 1 files; Failed processing 0 files
+▲ 결과 : 양호                     									
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-77 : LAN Manager 인증 수준                      					
+▲ 기준 : "LAN Manager 인증 수준" 정책에 "NTLMv2 응답만 보냄"이 설정되어 있는 경우 양호                  
+▲ 현황                               								
+Not set LAN Manager Authentication level. 						
+▲ 결과 : 취약                     									
+                                 									
+----------------------------------------    						
+                                									
+▲ W-78 : 보안 채널 데이터 디지털 암호화 또는 서명                      			
+▲ 기준 : 3가지 정책이 "사용"으로 되어 있는 경우 양호                   			
+보안 채널 데이터를 디지털 암호화 또는, 서명(항상)                   				
+보안 채널 데이터를 디지털 서명 (가능하면)                   					
+보안 채널 데이터를 디지털 암호화 (가능하면)                   					
+▲ 현황                               								
+    RequireSignOrSeal    REG_DWORD    0x1
+    SealSecureChannel    REG_DWORD    0x1
+    SignSecureChannel    REG_DWORD    0x1
+▲ 결과 : 양호                  										
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-79 : 파일 및 디렉터리 보호                      						
+▲ 기준 : NTFS 파일 시스템을 사용하는 경우 양호                   				
+▲ 현황                               								
+\How to check\                  									
+CMD\ diskpart                        								
+DISKPART\ select volumne=c or d or f ...      						
+DISKPART\ filesystems                  							
+▲ 결과 : 인터뷰 필요                     								
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-80 : 컴퓨터 계정 암호 최대 사용 기간                      				
+▲ 기준 : "컴퓨터 계정 암호 변경 사용 안함" 정책을 사용하지 않으며, "컴퓨터 계정 암호 최대 사용기간" 정책이 "90일"로 설정되어 있지 않은 경우 양호 
+▲ 현황                               								
+    DisablePasswordChange    REG_DWORD    0x0
+    MaximumPasswordAge    REG_DWORD    0x1e
+▲ 결과 : 취약                     									
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-81 : 시작프로그램 목록 분석                      						
+▲ 기준 : 시작프로그램 목록을 정기적으로 검사하고 불필요한 서비스 체크해제를 한 경우 양호      	
+▲ 현황                               								
+
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+    EssentialsRoleConfigWizard    REG_SZ    C:\Windows\explorer.exe "C:\Windows\System32\EssentialsRoleConfigWizard.exe"
+    VMware VM3DService Process    REG_SZ    "C:\Windows\system32\vm3dservice.exe" -u
+    VMware User Process    REG_SZ    "C:\Program Files\VMware\VMware Tools\vmtoolsd.exe" -n vmusr
+
+▲ 결과 : 인터뷰 필요                     								
+                                 									
+----------------------------------------    						
+                                 									
+▲ W-82 : Windows 인증 모드 사용                      					
+▲ 기준 : Windows 인증 모드를 사용하고 sa계정이 비활성화되어 있는 경우 sa 계정 사용 시 강력한 암호정책을 설정한 경우 양호                   
+▲ 현황                               								
+[SC] EnumQueryServicesStatus:OpenService FAILED 1060:
+
+The specified service does not exist as an installed service.
+
+Not exist SQL Server. 											
+▲ 결과 : 양호               											
+                                 									
+----------------------------------------    						
+                                 									
